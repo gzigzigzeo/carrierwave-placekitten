@@ -10,7 +10,7 @@ SimpleCov.start
 require 'carrierwave/placekitten'
 require 'support/test_uploader'
 
-CarrierWave.root = File.expand_path(File.dirname(__FILE__), '..')
+CarrierWave.root = File.expand_path(File.join(File.dirname(__FILE__), '../tmp'))
 
 CarrierWave.configure do |config|
   config.storage = :file

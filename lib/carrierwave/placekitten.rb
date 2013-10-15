@@ -8,11 +8,10 @@ module CarrierWave
     extend ActiveSupport::Concern
     include ActiveSupport::Configurable
 
-    mattr_accessor :enabled, :kitten_url, :should_replace, :environments
+    mattr_accessor :enabled, :kitten_url, :should_replace
 
     self.enabled = false
     self.kitten_url = "http://placekitten.com/g/%{width}/%{height}"
-    self.environments = []
     self.should_replace = ->(image) {
       image.file.blank? || (image.file.present? && not(image.file.exists?))
     }
@@ -22,23 +21,26 @@ module CarrierWave
         unless self.instance_methods.include?(:url_with_kitten_url)
           private
           define_method :url_with_kitten_url do |*args|
-            # NOTE: A piece of code from CW
-            version = if (version = args.first) && version.respond_to?(:to_sym)
-              raise ArgumentError, "Version #{version} doesn't exist!" if versions[version.to_sym].nil?
-              versions[version.to_sym] if version_exists?(version)
-            end
+            if enabled
+              # NOTE: A piece of code from CW
+              version = if (version = args.first) && version.respond_to?(:to_sym)
+                raise ArgumentError, "Version #{version} doesn't exist!" if versions[version.to_sym].nil?
+                versions[version.to_sym] if version_exists?(version)
+              end
 
-            version ||= self
+              version ||= self
 
-            should_place =
-              instance_exec(version, &should_replace) &&
-              (not(defined?(Rails)) || Rails.env.in?(environments))
+              should_place =
+                instance_exec(version, &should_replace)
 
-            width, height =
-              CarrierWave::PlaceKitten::Reflect.size(version, *defaults)
+              width, height =
+                CarrierWave::PlaceKitten::Reflect.size(version, *defaults)
 
-            if should_place && not(width.nil? || height.nil?)
-              kitten_url % { width: width, height: height }
+              if should_place && not(width.nil? || height.nil?)
+                kitten_url % { width: width, height: height }
+              else
+                url_without_kitten_url(*args)
+              end
             else
               url_without_kitten_url(*args)
             end
