@@ -1,7 +1,7 @@
 # Carrierwave::Placekitten
 
 There is a common case when images can not be transferred from production server
-to local develoment environment. In this instance markup could display
+to local develoment environment. In this instance markup could look
 corrupted because of image urls are nils.
 
 This gem helps to replace physically missing images with http://placekitten.com
@@ -52,6 +52,7 @@ To make this work place somewhere your initializer:
 CarrierWave::PlaceKitten.enabled = true
 CarrierWave::PlaceKitten.environments = [:development]
 end
+```
 
 You also could specify:
 ```ruby
@@ -62,9 +63,8 @@ CarrierWave::PlaceKitten.should_replace = ->(image) {
 ```
 
 Gem tries to automatically detect required image size by analyzing processing
-chain. Known meta methods are: #resize_to_fill, #resize_to_fit,
-#resize_to_limits, #resize_and_pad. Default size is used if none of known
-processing instructions found.
+chain. Known meta methods are: #resize_to_fill, #resize_to_fit, #resize_to_limits, #resize_and_pad.
+Default size is used if none of known processing instructions found.
 
 ## Contributing
 
