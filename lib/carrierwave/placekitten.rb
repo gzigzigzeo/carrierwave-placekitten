@@ -22,7 +22,7 @@ module CarrierWave
         unless self.instance_methods.include?(:url_with_kitten_url)
           private
           define_method :url_with_kitten_url do |*args|
-            # NOTE: A piece of code from cw
+            # NOTE: A piece of code from CW
             version = if (version = args.first) && version.respond_to?(:to_sym)
               raise ArgumentError, "Version #{version} doesn't exist!" if versions[version.to_sym].nil?
               versions[version.to_sym] if version_exists?(version)
