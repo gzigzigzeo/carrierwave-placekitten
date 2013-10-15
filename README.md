@@ -67,6 +67,13 @@ Gem tries to automatically detect required image size by analyzing processing
 chain. Known meta methods are: #resize_to_fill, #resize_to_fit, #resize_to_limits, #resize_and_pad.
 Default size is used if none of known processing instructions found.
 
+## TODO
+
+1. Override defaults per version.
+2. Override should replace per uploader.
+3. Make able to include in base uploader/any part of file (with
+black meta magick)
+
 ## Contributing
 
 1. Fork it
