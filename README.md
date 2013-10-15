@@ -1,4 +1,4 @@
-# Carrierwave::Placekitten
+# Carrierwave::PlaceKitten
 
 There is a common case when images can not be transferred from production server
 to local develoment environment. In this instance markup could look
@@ -49,14 +49,14 @@ end
 To make this work place somewhere your initializer:
 
 ```ruby
-CarrierWave::PlaceKitten.enabled = true
+CarrierWave::PlaceKitten.enabled = true if Rails.env.development?
 ```
 
 You also could specify:
 ```ruby
 CarrierWave::PlaceKitten.url = 'http://example.com/%{width}x%{height}.jpg'
 CarrierWave::PlaceKitten.should_replace = ->(image) {
-  Rails.env.development? # Always replace on development
+  Rails.env.development? # Replace even existing files on development
 }
 ```
 
