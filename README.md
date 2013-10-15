@@ -50,7 +50,6 @@ To make this work place somewhere your initializer:
 
 ```ruby
 CarrierWave::PlaceKitten.enabled = true
-end
 ```
 
 You also could specify:
