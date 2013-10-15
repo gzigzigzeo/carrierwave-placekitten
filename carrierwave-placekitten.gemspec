@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Carrierwave::PlaceKitten::VERSION
   spec.authors       = ["Victor Sokolov"]
   spec.email         = ["gzigzigzeo@gmail.com"]
-  spec.description   = %q{Place kittens for missing images at development environment}
-  spec.summary       = %q{Place kittens for missing images at development environment}
+  spec.description   = %q{Replaces physically missing images with placekitten placeholders}
+  spec.summary       = %q{Replaces physically missing images with placekitten placeholders}
   spec.homepage      = "http://github.com/gzigzigzeo/carrierwave-placekitten"
   spec.license       = "MIT"
 
