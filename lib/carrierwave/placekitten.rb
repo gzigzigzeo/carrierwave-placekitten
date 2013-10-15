@@ -1,6 +1,7 @@
 require 'active_support/concern'
 require 'active_support/core_ext/module/attribute_accessors'
 require 'carrierwave/placekitten/version'
+require 'carrierwave/placekitten/reflect'
 
 module CarrierWave
   module PlaceKitten
@@ -17,21 +18,34 @@ module CarrierWave
     }
 
     module ClassMethods
-      def placekitten(width, height, *args)
-        private
-        define_method :url_with_kitten_url do |*args|
-          should_place =
-            instance_exec(self, &should_replace) &&
-            (not(defined?(Rails)) || Rails.env.in?(environments))
+      def placekitten(*defaults)
+        unless self.instance_methods.include?(:url_with_kitten_url)
+          private
+          define_method :url_with_kitten_url do |*args|
+            # NOTE: A piece of code from cw
+            version = if (version = args.first) && version.respond_to?(:to_sym)
+              raise ArgumentError, "Version #{version} doesn't exist!" if versions[version.to_sym].nil?
+              versions[version.to_sym] if version_exists?(version)
+            end
 
-          if should_place
-            kitten_url % { width: width, height: height }
-          else
-            url_without_kitten_url(*args)
+            version ||= self
+
+            should_place =
+              instance_exec(version, &should_replace) &&
+              (not(defined?(Rails)) || Rails.env.in?(environments))
+
+            width, height =
+              CarrierWave::PlaceKitten::Reflect.size(version, *defaults)
+
+            if should_place && not(width.nil? || height.nil?)
+              kitten_url % { width: width, height: height }
+            else
+              url_without_kitten_url(*args)
+            end
           end
-        end
 
-        alias_method_chain :url, :kitten_url
+          alias_method_chain :url, :kitten_url
+        end
       end
     end
   end
