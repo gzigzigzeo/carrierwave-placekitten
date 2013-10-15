@@ -26,7 +26,6 @@ Or install it yourself as:
 ```ruby
 class FooUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
-  include CarrierWave::PlaceKitten
 
   def store_dir
     "store"
@@ -36,13 +35,17 @@ class FooUploader < CarrierWave::Uploader::Base
     "cache"
   end
 
-  placekitten 100, 200 # Default placeholder size
   version :version do
     process resize_to_fill: [300, 400] # Detects size automatically
     version :next do
       process resize_to_fit: [500, 600]
     end
   end
+
+  # IMPORTANT! You must include placekitten at the and of your uploader
+  # to make it able to intercept calls to #url
+  include CarrierWave::PlaceKitten
+  placekitten 100, 200 # Default placeholder size
 end
 ```
 
